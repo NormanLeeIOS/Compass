@@ -404,6 +404,7 @@
 				AC54D7281A29FA5C00E61C2B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AC54D7291A29FA5C00E61C2B /* Build configuration list for PBXNativeTarget "CompassTests" */ = {
 			isa = XCConfigurationList;
@@ -412,6 +413,7 @@
 				AC54D72B1A29FA5C00E61C2B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
