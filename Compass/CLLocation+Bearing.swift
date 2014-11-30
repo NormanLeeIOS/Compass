@@ -30,7 +30,8 @@ extension CLLocation {
         var x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
         
         var radiansBearing = atan2(y, x)
-        if radiansBearing < 0.0 {
+        
+        if radiansBearing < -M_PI {
             radiansBearing += 2 * M_PI
         }
         
