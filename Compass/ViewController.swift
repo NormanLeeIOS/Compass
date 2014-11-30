@@ -16,6 +16,8 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var kaabaPointerView: UIView!
     @IBOutlet weak var compassBoardView: UIImageView!
+    @IBOutlet weak var degreeLabel: UILabel!
+    @IBOutlet weak var directionLabel: UILabel!
     
     private var locationManager: CLLocationManager!
     private var currentLocation: CLLocation!
@@ -57,6 +59,40 @@ class ViewController: UIViewController {
             self.presentViewController(alert, animated: true, completion: nil)
         }
     }
+    
+    func updateDegreeLabel(radians: Double) {
+        var degrees = radiansToDegress(radians)
+        if degrees < 0.0 {
+            degrees += 360.0
+        }
+        
+        if degrees > 360.0 {
+            degrees -= 360.0
+        }
+        
+        self.degreeLabel.text = NSString(format: "%.0f˚", degrees)
+        self.directionLabel.text = self.directionString(degrees)
+    }
+    
+    func directionString(degrees: Double) -> String {
+        if (degrees > 0.0 && degrees < 90.0) {
+            return "ne"
+        } else if (degrees == 90.0) {
+            return "e"
+        } else if (degrees > 90.0 && degrees < 180.0) {
+            return "es"
+        } else if (degrees == 180.0) {
+            return "s"
+        } else if (degrees > 180.0 && degrees < 270.0) {
+            return "sw"
+        } else if (degrees == 270.0) {
+            return "w"
+        } else if (degrees > 270.0 && degrees < 360.0) {
+            return "wn"
+        } else {
+            return "n"
+        }
+    }
 }
 
 extension ViewController: CLLocationManagerDelegate {
@@ -67,8 +103,10 @@ extension ViewController: CLLocationManagerDelegate {
         }
         
         if self.isUpdateEnabled == true {
+            var radians = headingRadians + self.radiansToKaaba
+            self.updateDegreeLabel(radians)
             self.kaabaPointerView.layer.transform =
-                CATransform3DMakeRotation(CGFloat(headingRadians + self.radiansToKaaba), 0, 0, 1)
+                CATransform3DMakeRotation(CGFloat(radians), 0, 0, 1)
             self.compassBoardView.layer.transform =
                 CATransform3DMakeRotation(CGFloat(headingRadians), 0, 0, 1)
         } else {
@@ -76,6 +114,8 @@ extension ViewController: CLLocationManagerDelegate {
                 return
             }
             self.isCompassBoardRotating = true
+            
+            self.updateDegreeLabel(headingRadians + self.radiansToKaaba)
             
             CATransaction.begin()
             CATransaction.setDisableActions(true)
